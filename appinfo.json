@@ -1,0 +1,81 @@
+{
+    "appKeys": {},
+    "capabilities": [
+        "configurable"
+    ],
+    "companyName": "jpb31",
+    "longName": "FreeboxTelec",
+    "projectType": "pebblejs",
+    "resources": {
+        "media": [
+            {
+                "file": "images/menu_icon.png",
+                "name": "IMAGE_MENU_ICON",
+                "type": "bitmap"
+            },
+            {
+                "file": "images/logo_splash.png",
+                "name": "IMAGE_LOGO_SPLASH",
+                "type": "bitmap"
+            },
+            {
+                "file": "images/tile_splash.png",
+                "name": "IMAGE_TILE_SPLASH",
+                "type": "bitmap"
+            },
+            {
+                "file": "fonts/UbuntuMono-Regular.ttf",
+                "name": "MONO_FONT_14",
+                "type": "font"
+            },
+            {
+                "file": "images/ico.png",
+                "menuIcon": true,
+                "name": "IMAGES_ICO_PNG",
+                "type": "bitmap"
+            },
+            {
+                "file": "images/free.png",
+                "name": "IMAGES_FREE_PNG",
+                "type": "bitmap"
+            },
+            {
+                "file": "images/play.png",
+                "name": "IMAGES_PLAY_PNG",
+                "type": "bitmap"
+            },
+            {
+                "file": "images/mute.png",
+                "name": "IMAGES_MUTE_PNG",
+                "type": "bitmap"
+            },
+            {
+                "file": "images/marche.png",
+                "name": "IMAGES_MARCHE_PNG",
+                "type": "bitmap"
+            },
+            {
+                "file": "images/inc.png",
+                "name": "IMAGES_INC_PNG",
+                "type": "bitmap"
+            },
+            {
+                "file": "images/dec.png",
+                "name": "IMAGES_DEC_PNG",
+                "type": "bitmap"
+            }
+        ]
+    },
+    "sdkVersion": "3",
+    "shortName": "FreeboxTelec",
+    "targetPlatforms": [
+        "basalt"
+    ],
+    "uuid": "4651a6c8-0f74-4155-9b68-4508ff460372",
+    "versionCode": 1,
+    "versionLabel": "1.0",
+    "watchapp": {
+        "hiddenApp": false,
+        "watchface": false
+    }
+}
