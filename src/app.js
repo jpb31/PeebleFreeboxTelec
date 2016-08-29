@@ -1,50 +1,61 @@
 /**
- * Welcome to Pebble.js!
- *
- * This is where you write your app.
+ * Freebox Telec for Pebble 
+ * Version JS
+ * 
  */
 
 
-//var ="87520259";
+
 
 var mode = 0;
-var max_mode = 1;
+var max_mode = 2;
 var options;
 var conf = false;
-var EnvoiEncours = false;
 
 var t = {
   inc: 
     {
-      code: ["vol_inc", "prgm_inc"],
+      code: ["vol_inc", "prgm_inc", "ok"],
       x: 86, 
-      x_enf: 96
+      x_enf: 96,
+      encours: 0
     },
   dec:
     {
-      code: ["vol_dec", "prgm_dec"],
-      touche: "dec",
+      code: ["vol_dec", "prgm_dec", "down"],
       x: 86, 
-      x_enf: 96
+      x_enf: 96,
+      encours: 0
     },
   play:
     {
-      code: "play",
+      code: ["play", "play", "up"],
       x: 50, 
-      x_enf: 55
+      x_enf: 55,
+      encours: 0
     },
   power:
     {
-      code: "power",
+      code: ["power", "power", "left"],
       x: 50, 
-      x_enf: 55
+      x_enf: 55,
+      encours: 0
     },
   mute:
     {
-      code: "mute",
+      code: ["mute", "mute", "right"],
       x: 50, 
-      x_enf: 55
+      x_enf: 55,
+      encours: 0
     }
+};
+
+var imgs = {
+  up:     ["inc",    "inc",    "ok"],
+  up_l:   ["play",   "play",   "up"],
+  sel_l:  ["marche", "marche", "left"],
+  down:   ["dec",    "dec",    "down"],
+  down_l: ["mute",   "mute",   "right"]
 };
 
 
@@ -56,58 +67,64 @@ var Settings = require('settings');
 Settings.config(
   { url: 'http://jp.bin.free.fr/freepebble/config.html?' },
   function(e) {
-    console.log('opening configurable');
+    //console.log('opening configurable');
   },
   function(e) {
     TestConfig();
   }
 );
 
+function retour(touche) {
+  touche.encours = 0;
+  var pos2 = touche.img.position();
+  pos2.x = touche.x;
+  touche.img.animate('position', pos2, 200);
+}
+
 function click(touche) {
   // animation  
-  if (! EnvoiEncours) {
-    EnvoiEncours = true;
+  if (touche.encours === 0) {
     var pos1 = touche.img.position();
     pos1.x = touche.x_enf;
     touche.img.animate('position', pos1, 200);
-    
-    var code;
-   
-    if( typeof touche.code === 'string' ) {
-      code =  touche.code;
-       //console.log(code);
-    } else {
-      code = touche.code[mode];
-    }
-    
-    var vurl = "http://" + options.nu + ".freebox.fr/pub/remote_control?code=" + options.code + "&key=" + code;
-    
-    ajax({ url: vurl,  type: 'text',  cache: false},
-      function(data) {
-        var pos2 = touche.img.position();
-        pos2.x = touche.x;
-        touche.img.animate('position', pos2, 200);
-        EnvoiEncours = false;
-       },
-      function (data) {
-        var pos2 = touche.img.position();
-        pos2.x = touche.x;
-        touche.img.animate('position', pos2, 200);
-        EnvoiEncours = false;
-        
-        var msg = "Erreur inconnue";
-        if (data === "") 
-          msg = "Player semble introuvable";
-        if (data.indexOf("Forbidden") > -1)
-          msg = "Le code semble incorrect";
-        //console.log(data);
-        var werr = new UI.Card({
-            title: "Erreur ! ",
-            body: msg 
-          });
-        werr.show();
-      });
   }
+  if (touche.encours !== 0) {
+    clearTimeout(touche.encours);
+    touche.encours = 0;
+  }
+  touche.encours = setTimeout(function(){ retour(touche); }, 500);
+
+  var code;
+
+  if( typeof touche.code === 'string' ) {
+    code =  touche.code;
+    //console.log(code);
+  } else {
+    code = touche.code[mode];
+  }
+
+  
+  var vurl = "http://" + options.nu + ".freebox.fr/pub/remote_control?code=" + options.code + "&key=" + code;
+
+  ajax({ url: vurl,  type: 'text',  cache: false},
+       function(data) {
+         //retour(touche);
+       },
+       function (data) {
+         //retour(touche);
+
+         var msg = "Erreur inconnue";
+         if (data === "") 
+           msg = "Player semble introuvable";
+         if (data.indexOf("Forbidden") > -1)
+           msg = "Le code semble incorrect";
+         //console.log(data);
+         var werr = new UI.Card({
+           title: "Erreur ! ",
+           body: msg 
+         });
+         werr.show();
+       });
 }
 
 
@@ -201,6 +218,13 @@ function change() {
   }
   //main.body = mode;
   
+  imginc.image("images/" + imgs.up[mode] + ".png");
+  imgplay.image("images/" + imgs.up_l[mode] + ".png");
+  imgmarche.image("images/" + imgs.sel_l[mode] + ".png");
+  imgdec.image("images/" + imgs.down[mode] + ".png");
+  imgmute.image("images/" + imgs.down_l[mode] + ".png");
+  
+  
   switch(mode) {
     case 0:
       //main.action('select', 'images/vol.png');
@@ -209,6 +233,10 @@ function change() {
     case 1:
       //main.action('select', 'images/prog.png');
       tAction.text('PROG');
+      break;
+    case 2:
+      //main.action('select', 'images/prog.png');
+      tAction.text('DIR');
       break;
   }
 }

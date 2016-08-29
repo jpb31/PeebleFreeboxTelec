@@ -29,6 +29,31 @@
                 "type": "font"
             },
             {
+                "file": "images/up.png",
+                "name": "IMAGES_UP_PNG",
+                "type": "bitmap"
+            },
+            {
+                "file": "images/right.png",
+                "name": "IMAGES_RIGHT_PNG",
+                "type": "bitmap"
+            },
+            {
+                "file": "images/left.png",
+                "name": "IMAGES_LEFT_PNG",
+                "type": "bitmap"
+            },
+            {
+                "file": "images/down.png",
+                "name": "IMAGES_DOWN_PNG",
+                "type": "bitmap"
+            },
+            {
+                "file": "images/ok.png",
+                "name": "IMAGES_OK_PNG",
+                "type": "bitmap"
+            },
+            {
                 "file": "images/ico.png",
                 "menuIcon": true,
                 "name": "IMAGES_ICO_PNG",
